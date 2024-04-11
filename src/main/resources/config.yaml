@@ -1,4 +1,4 @@
 llm:
-  api_key: sk-9d37f9717d664f55a4e2bf51dd249def
+  api_key: sk-XXX
   model_name: qwen-plus
   temperature: 0.7
