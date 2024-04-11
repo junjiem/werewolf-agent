@@ -184,7 +184,7 @@ public class Main {
             }
             GameData.addPlayerInformation(player.getId(), voteInfo);
         }
-        System.out.println("投票结果：" + map.entrySet().stream()
+        System.out.println("第" + day + "天第" + times + "次投票结果：" + map.entrySet().stream()
                 .map(e -> e.getKey() + "->" + e.getValue())
                 .collect(Collectors.joining(", "))
         );
