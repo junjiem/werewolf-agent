@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <!-- 高亮日志格式  -->
+    <property name="HIGHLIGHT_PATTERN" value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %green(%logger{50}) - %highlight(%msg) %n"/>
+
+    <!-- 控制台输出-高亮 -->
+    <appender name="CONSOLE-WITH-HIGHLIGHT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${HIGHLIGHT_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 定义对应级别的appender -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE-WITH-HIGHLIGHT"/>
+    </root>
+
+</configuration>
