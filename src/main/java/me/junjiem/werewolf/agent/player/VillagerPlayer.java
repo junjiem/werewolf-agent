@@ -1,8 +1,8 @@
 package me.junjiem.werewolf.agent.player;
 
-import lombok.Builder;
 import lombok.NonNull;
 import me.junjiem.werewolf.agent.role.VillagerRole;
+import me.junjiem.werewolf.agent.util.GameData;
 
 import java.util.List;
 
@@ -12,26 +12,32 @@ import java.util.List;
  * @Author JunjieM
  * @Date 2024/4/10
  */
-public class VillagerPlayer {
-    private int id; // ID
-    private VillagerRole role; // 角色
+public class VillagerPlayer extends AbstractPlayer {
+    private final VillagerRole role;
 
-    @Builder
-    public VillagerPlayer(int id, @NonNull String apiKey, String modelName, Float temperature) {
-        this.id = id;
-        this.role = VillagerRole.builder().apiKey(apiKey).modelName(modelName).temperature(temperature).build();
+    public VillagerPlayer(int id, String roleName, @NonNull String apiKey, String modelName, Float temperature) {
+        super(id, roleName);
+        this.role = new VillagerRole(apiKey, modelName, temperature);
     }
 
-    public String speak(int index, String gameInformation) {
-        return role.speak(id, index, gameInformation);
+    @Override
+    public boolean isGoodGuys() {
+        return true;
     }
 
-    public int vote(String gameInformation, List<Integer> voteIds) {
-        return role.vote(id, gameInformation, voteIds);
+    @Override
+    public String speak(int index) {
+        return role.speak(id, index, GameData.getGameInformation());
     }
 
-    public String testament(String gameInformation) {
-        return role.testament(id, gameInformation);
+    @Override
+    public int vote(List<Integer> voteIds) {
+        return role.vote(id, GameData.getGameInformation(), voteIds);
+    }
+
+    @Override
+    public String testament() {
+        return role.testament(id, GameData.getGameInformation());
     }
 
 }

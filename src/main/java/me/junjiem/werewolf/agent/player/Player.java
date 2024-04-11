@@ -1,22 +1,47 @@
 package me.junjiem.werewolf.agent.player;
 
-import lombok.Data;
-import me.junjiem.werewolf.agent.role.Role;
+import me.junjiem.werewolf.agent.GameOverException;
+
+import java.util.List;
 
 /**
- * 玩家
- *
  * @Author JunjieM
- * @Date 2024/4/8
+ * @Date 2024/4/11
  */
-@Data
-public class Player {
-    private int id; // ID
-    private Role role; // 角色
-    private boolean isAlive = true; // 是否活着
+public interface Player {
 
-    public Player(int id, Role role) {
-        this.id = id;
-        this.role = role;
-    }
+    /**
+     * 是否是好人阵营
+     *
+     * @return
+     */
+    boolean isGoodGuys();
+
+    /**
+     * 是否活着
+     */
+    boolean isAlive();
+
+    /**
+     * 发言
+     *
+     * @param index
+     * @return
+     */
+    String speak(int index);
+
+    /**
+     * 投票
+     *
+     * @param votingIds
+     * @return
+     */
+    int vote(List<Integer> votingIds);
+
+    /**
+     * 遗言
+     *
+     * @return
+     */
+    String testament() throws GameOverException;
 }

@@ -1,20 +1,22 @@
 package me.junjiem.werewolf.agent.role;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
-import lombok.Builder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.junjiem.werewolf.agent.bean.KillResult;
 import me.junjiem.werewolf.agent.bean.SpeakResult;
 import me.junjiem.werewolf.agent.bean.TestamentResult;
 import me.junjiem.werewolf.agent.bean.VoteResult;
+import me.junjiem.werewolf.agent.player.AbstractPlayer;
+import me.junjiem.werewolf.agent.player.WerewolfPlayer;
 import me.junjiem.werewolf.agent.util.ChatLanguageModelUtil;
+import me.junjiem.werewolf.agent.util.GameData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 狼人Role
@@ -23,14 +25,13 @@ import java.util.List;
  * @Date 2024/4/9
  */
 @Slf4j
-public class WerewolfRole implements BadRole {
+public class WerewolfRole extends AbstractRole implements BadRole {
 
     @NonNull
     private final WerewolfAssistant assistant;
 
-    @Builder
     public WerewolfRole(@NonNull String apiKey, String modelName, Float temperature) {
-        ChatLanguageModel chatLanguageModel = ChatLanguageModelUtil.build(apiKey, modelName, temperature);
+        super(apiKey, modelName, temperature);
         this.assistant = AiServices.create(WerewolfAssistant.class, chatLanguageModel);
     }
 
@@ -42,12 +43,12 @@ public class WerewolfRole implements BadRole {
         return result.getMySpeech();
     }
 
-    public Integer vote(int id, String gameInformation, List<Integer> voteIds) {
+    public int vote(int id, String gameInformation, List<Integer> voteIds) {
         String answer = assistant.vote(id, gameInformation, voteIds);
         log.info(answer);
         VoteResult result = ChatLanguageModelUtil.jsonAnswer2Object(answer, VoteResult.class);
         log.info("投票结果：{}", result);
-        return result.getVoteId();
+        return result.getVoteId()!=null?result.getVoteId():-1;
     }
 
     public String testament(int id, String gameInformation) {
@@ -58,8 +59,7 @@ public class WerewolfRole implements BadRole {
         return result.getLastWords();
     }
 
-    public KillResult skill(int id, List<String> werewolfTeammates,
-                            String gameInformation, String teamStrategies) {
+    public KillResult skill(int id, String gameInformation, List<String> werewolfTeammates, String teamStrategies) {
         String answer = assistant.skill(id, werewolfTeammates, gameInformation, teamStrategies);
         log.info(answer);
         KillResult result = ChatLanguageModelUtil.jsonAnswer2Object(answer, KillResult.class);
@@ -76,8 +76,8 @@ public class WerewolfRole implements BadRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/werewolf-speak-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/werewolf-speak-user-prompt-template.txt")
         String speak(@V("id") int id, @V("index") int index, @V("gameInformation") String gameInformation,
                      @V("werewolfTeams") List<String> werewolfTeams, @V("killId") int killId);
 
@@ -86,8 +86,8 @@ public class WerewolfRole implements BadRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/werewolf-skill-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/werewolf-skill-user-prompt-template.txt")
         String skill(@V("id") int id, @V("werewolfTeammates") List<String> werewolfTeammates,
                      @V("gameInformation") String gameInformation, @V("teamStrategies") String teamStrategies);
 
@@ -96,8 +96,8 @@ public class WerewolfRole implements BadRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/werewolf-vote-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/werewolf-vote-user-prompt-template.txt")
         String vote(@V("id") int id, @V("gameInformation") String gameInformation,
                     @V("voteIds") List<Integer> voteIds);
 
@@ -106,8 +106,8 @@ public class WerewolfRole implements BadRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/werewolf-testament-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/werewolf-testament-user-prompt-template.txt")
         String testament(@V("id") int id, @V("gameInformation") String gameInformation);
     }
 }

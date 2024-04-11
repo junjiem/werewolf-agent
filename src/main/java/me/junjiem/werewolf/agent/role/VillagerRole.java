@@ -1,11 +1,9 @@
 package me.junjiem.werewolf.agent.role;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
-import lombok.Builder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.junjiem.werewolf.agent.bean.SpeakResult;
@@ -22,14 +20,13 @@ import java.util.List;
  * @Date 2024/4/9
  */
 @Slf4j
-public class VillagerRole implements GoodRole {
+public class VillagerRole extends AbstractRole implements GoodRole {
 
     @NonNull
     private final VillagerAssistant assistant;
 
-    @Builder
     public VillagerRole(@NonNull String apiKey, String modelName, Float temperature) {
-        ChatLanguageModel chatLanguageModel = ChatLanguageModelUtil.build(apiKey, modelName, temperature);
+        super(apiKey, modelName, temperature);
         this.assistant = AiServices.create(VillagerAssistant.class, chatLanguageModel);
     }
 
@@ -41,12 +38,12 @@ public class VillagerRole implements GoodRole {
         return result.getMySpeech();
     }
 
-    public Integer vote(int id, String gameInformation, List<Integer> voteIds) {
+    public int vote(int id, String gameInformation, List<Integer> voteIds) {
         String answer = assistant.vote(id, gameInformation, voteIds);
         log.info(answer);
         VoteResult result = ChatLanguageModelUtil.jsonAnswer2Object(answer, VoteResult.class);
         log.info("投票结果：{}", result);
-        return result.getVoteId();
+        return result.getVoteId()!=null?result.getVoteId():-1;
     }
 
     public String testament(int id, String gameInformation) {
@@ -66,8 +63,8 @@ public class VillagerRole implements GoodRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/villager-speak-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/villager-speak-user-prompt-template.txt")
         String speak(@V("id") int id, @V("index") int index, @V("gameInformation") String gameInformation);
 
         /**
@@ -75,8 +72,8 @@ public class VillagerRole implements GoodRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/villager-vote-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/villager-vote-user-prompt-template.txt")
         String vote(@V("id") int id, @V("gameInformation") String gameInformation,
                     @V("voteIds") List<Integer> voteIds);
 
@@ -85,8 +82,8 @@ public class VillagerRole implements GoodRole {
          *
          * @return
          */
-        @SystemMessage(fromResource = "/player-system-prompt-template.txt")
-        @UserMessage(fromResource = "/villager-testament-user-prompt-template.txt")
+        @SystemMessage(fromResource = "/prompt_template/player-system-prompt-template.txt")
+        @UserMessage(fromResource = "/prompt_template/villager-testament-user-prompt-template.txt")
         String testament(@V("id") int id, @V("gameInformation") String gameInformation);
     }
 
