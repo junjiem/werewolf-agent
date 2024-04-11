@@ -1,4 +1,4 @@
 llm:
   api_key: sk-XXX
-  model_name: qwen-plus
+  model_name: qwen-turbo
   temperature: 0.7
