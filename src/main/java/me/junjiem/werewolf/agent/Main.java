@@ -35,8 +35,6 @@ public class Main {
     private static final String modelName = (String) ((Map) config.get("llm")).get("model_name");
     private static final Double temperature = (Double) ((Map) config.get("llm")).get("temperature");
 
-    private static boolean goodWin = true;
-
     private static void init() {
         // 定义角色列表
         List<String> roles = new ArrayList<>();
@@ -132,7 +130,7 @@ public class Main {
         } catch (GameOverException e) {
             System.out.println("-------------------结束游戏-------------------");
             System.out.println("---------------------------------------------");
-            System.out.println("|              获胜阵营：" + (goodWin ? "好人" : "坏人") + "阵营               |");
+            System.out.println("|              获胜阵营：" + (GameData.goodGuysWin ? "好人" : "坏人") + "阵营               |");
             System.out.println("---------------------------------------------");
         }
     }
