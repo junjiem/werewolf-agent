@@ -115,7 +115,7 @@ public class GameData {
 
     public static void playerDead(int id) throws GameOverException {
         killIds.add(id);
-        log.info("目前玩家状态：" + GameData.getAlivePlayers().stream()
+        log.info("目前存活玩家：" + GameData.getAlivePlayers().stream()
                 .map(p -> p.getId() + "号[" + p.getRoleName() + "]")
                 .collect(Collectors.joining(", ")));
         if (aliveWerewolfCount() == 0) {
