@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class ChatLanguageModelUtil {
 
     private static final Pattern JSON_PATTERN = Pattern
-            .compile("^```(.*?)\\n([\\s\\S]*?)\\n```", Pattern.MULTILINE);
+            .compile("^\\s*```(.*?)\\n([\\s\\S]*?)\\n\\s*```", Pattern.MULTILINE);
 
     private ChatLanguageModelUtil() {
     }
