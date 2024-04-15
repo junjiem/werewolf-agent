@@ -45,7 +45,7 @@ public class ChatLanguageModelUtil {
             answer = matcher.group(2);
         }
         Gson gson = new Gson();
-        answer = answer.replaceAll(",\\s*}", "}");
+        answer = answer.replaceAll(",(?=\\s*?[}\\]])", "");
         log.info("JSON: " + answer);
         return gson.fromJson(answer, classOfT);
     }
