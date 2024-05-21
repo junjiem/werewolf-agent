@@ -25,8 +25,8 @@ public class HunterRole extends AbstractRole implements DeityRole {
     @NonNull
     private final HunterAssistant assistant;
 
-    public HunterRole(@NonNull String apiKey, String modelName, Float temperature) {
-        super(apiKey, modelName, temperature);
+    public HunterRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+        super(service, apiKey, modelName, temperature);
         this.assistant = AiServices.create(HunterAssistant.class, chatLanguageModel);
     }
 

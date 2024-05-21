@@ -31,6 +31,7 @@ public class Main {
         }
     }
 
+    private static final String service = (String) ((Map) config.get("llm")).get("service");
     private static final String apiKey = (String) ((Map) config.get("llm")).get("api_key");
     private static final String modelName = (String) ((Map) config.get("llm")).get("model_name");
     private static final Double temperature = (Double) ((Map) config.get("llm")).get("temperature");
@@ -152,15 +153,15 @@ public class Main {
     private static AbstractPlayer createPlayer(int id, String roleName) {
         switch (roleName) {
             case "村民":
-                return new VillagerPlayer(id, roleName, apiKey, modelName, temperature.floatValue());
+                return new VillagerPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
             case "狼人":
-                return new WerewolfPlayer(id, roleName, apiKey, modelName, temperature.floatValue());
+                return new WerewolfPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
             case "预言家":
-                return new ProphetPlayer(id, roleName, apiKey, modelName, temperature.floatValue());
+                return new ProphetPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
             case "女巫":
-                return new WitchPlayer(id, roleName, apiKey, modelName, temperature.floatValue());
+                return new WitchPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
             case "猎人":
-                return new HunterPlayer(id, roleName, apiKey, modelName, temperature.floatValue());
+                return new HunterPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
             default:
                 throw new IllegalArgumentException("不支持的角色: " + roleName);
         }

@@ -5,6 +5,10 @@ import com.google.gson.GsonBuilder;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.dashscope.QwenChatModel;
 import dev.langchain4j.model.dashscope.QwenModelName;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiChatModelName;
+import dev.langchain4j.model.zhipu.ZhipuAiChatModel;
+import dev.langchain4j.model.zhipu.chat.ChatCompletionModel;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.junjiem.werewolf.agent.bean.SpeakResult;
@@ -26,16 +30,30 @@ public class ChatLanguageModelUtil {
     private ChatLanguageModelUtil() {
     }
 
-    public static ChatLanguageModel build(@NonNull String apiKey) {
-        return build(apiKey, null, null);
+    public static ChatLanguageModel build(@NonNull String service, @NonNull String apiKey) {
+        return build(service, apiKey, null, null);
     }
 
-    public static ChatLanguageModel build(@NonNull String apiKey, String modelName, Float temperature) {
-        QwenChatModel.QwenChatModelBuilder builder = QwenChatModel.builder()
-                .apiKey(apiKey)
-                .modelName(Optional.ofNullable(modelName).orElse(QwenModelName.QWEN_TURBO));
-        Optional.ofNullable(temperature).ifPresent(builder::temperature);
-        return builder.build();
+    public static ChatLanguageModel build(@NonNull String service, @NonNull String apiKey, String modelName, Double temperature) {
+        if ("zhipuai".equalsIgnoreCase(service)) {
+            ZhipuAiChatModel.ZhipuAiChatModelBuilder builder = ZhipuAiChatModel.builder()
+                    .apiKey(apiKey)
+                    .model(Optional.ofNullable(modelName).orElse(ChatCompletionModel.GLM_3_TURBO.toString()));
+            Optional.ofNullable(temperature).ifPresent(builder::temperature);
+            return builder.build();
+        } else if ("dashscope".equalsIgnoreCase(service)) {
+            QwenChatModel.QwenChatModelBuilder builder = QwenChatModel.builder()
+                    .apiKey(apiKey)
+                    .modelName(Optional.ofNullable(modelName).orElse(QwenModelName.QWEN_TURBO));
+            Optional.ofNullable(temperature).ifPresent(t -> builder.temperature(t.floatValue()));
+            return builder.build();
+        } else {
+            OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
+                    .apiKey(apiKey)
+                    .modelName(Optional.ofNullable(modelName).orElse(OpenAiChatModelName.GPT_3_5_TURBO.toString()));
+            Optional.ofNullable(temperature).ifPresent(builder::temperature);
+            return builder.build();
+        }
     }
 
     public static <T> T jsonAnswer2Object(String answer, Class<T> classOfT) {

@@ -26,8 +26,8 @@ public class WitchRole extends AbstractRole implements DeityRole {
     @NonNull
     private final WitchAssistant assistant;
 
-    public WitchRole(@NonNull String apiKey, String modelName, Float temperature) {
-        super(apiKey, modelName, temperature);
+    public WitchRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+        super(service, apiKey, modelName, temperature);
         this.assistant = AiServices.create(WitchAssistant.class, chatLanguageModel);
     }
 

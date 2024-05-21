@@ -26,8 +26,8 @@ public class ProphetRole extends AbstractRole implements DeityRole {
     @NonNull
     private final ProphetAssistant assistant;
 
-    public ProphetRole(@NonNull String apiKey, String modelName, Float temperature) {
-        super(apiKey, modelName, temperature);
+    public ProphetRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+        super(service, apiKey, modelName, temperature);
         this.assistant = AiServices.create(ProphetAssistant.class, chatLanguageModel);
     }
 

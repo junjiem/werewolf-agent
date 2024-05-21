@@ -25,8 +25,8 @@ public class VillagerRole extends AbstractRole implements GoodRole {
     @NonNull
     private final VillagerAssistant assistant;
 
-    public VillagerRole(@NonNull String apiKey, String modelName, Float temperature) {
-        super(apiKey, modelName, temperature);
+    public VillagerRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+        super(service, apiKey, modelName, temperature);
         this.assistant = AiServices.create(VillagerAssistant.class, chatLanguageModel);
     }
 
