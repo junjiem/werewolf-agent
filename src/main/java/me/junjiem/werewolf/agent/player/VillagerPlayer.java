@@ -15,7 +15,7 @@ import java.util.List;
 public class VillagerPlayer extends AbstractPlayer {
     private final VillagerRole role;
 
-    public VillagerPlayer(int id, String roleName, @NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+    public VillagerPlayer(int id, String roleName, @NonNull String service, @NonNull String apiKey, String modelName, Double temperature) {
         super(id, roleName);
         this.role = new VillagerRole(service, apiKey, modelName, temperature);
     }

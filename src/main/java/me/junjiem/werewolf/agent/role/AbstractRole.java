@@ -13,7 +13,7 @@ public abstract class AbstractRole {
     @NonNull
     protected final ChatLanguageModel chatLanguageModel;
 
-    public AbstractRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+    public AbstractRole(@NonNull String service, @NonNull String apiKey, String modelName, Double temperature) {
         this.chatLanguageModel = ChatLanguageModelUtil.build(service, apiKey, modelName, temperature);
     }
 

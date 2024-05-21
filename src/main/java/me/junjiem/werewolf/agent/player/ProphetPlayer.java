@@ -19,7 +19,7 @@ public class ProphetPlayer extends AbstractPlayer {
     private CheckResult checkResult;
     private boolean checkIsOk;
 
-    public ProphetPlayer(int id, String roleName, @NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+    public ProphetPlayer(int id, String roleName, @NonNull String service, @NonNull String apiKey, String modelName, Double temperature) {
         super(id, roleName);
         this.role = new ProphetRole(service, apiKey, modelName, temperature);
     }

@@ -153,15 +153,15 @@ public class Main {
     private static AbstractPlayer createPlayer(int id, String roleName) {
         switch (roleName) {
             case "村民":
-                return new VillagerPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
+                return new VillagerPlayer(id, roleName, service, apiKey, modelName, temperature);
             case "狼人":
-                return new WerewolfPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
+                return new WerewolfPlayer(id, roleName, service, apiKey, modelName, temperature);
             case "预言家":
-                return new ProphetPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
+                return new ProphetPlayer(id, roleName, service, apiKey, modelName, temperature);
             case "女巫":
-                return new WitchPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
+                return new WitchPlayer(id, roleName, service, apiKey, modelName, temperature);
             case "猎人":
-                return new HunterPlayer(id, roleName, service, apiKey, modelName, temperature.floatValue());
+                return new HunterPlayer(id, roleName, service, apiKey, modelName, temperature);
             default:
                 throw new IllegalArgumentException("不支持的角色: " + roleName);
         }

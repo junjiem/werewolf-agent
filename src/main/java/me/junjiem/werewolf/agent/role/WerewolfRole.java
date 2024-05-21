@@ -30,7 +30,7 @@ public class WerewolfRole extends AbstractRole implements BadRole {
     @NonNull
     private final WerewolfAssistant assistant;
 
-    public WerewolfRole(@NonNull String service, @NonNull String apiKey, String modelName, Float temperature) {
+    public WerewolfRole(@NonNull String service, @NonNull String apiKey, String modelName, Double temperature) {
         super(service, apiKey, modelName, temperature);
         this.assistant = AiServices.create(WerewolfAssistant.class, chatLanguageModel);
     }
