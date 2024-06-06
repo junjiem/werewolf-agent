@@ -65,7 +65,7 @@ public class Main {
         init();
         System.out.println("-------------------开始游戏-------------------");
         try {
-            for (int i = 1; true; i++) {
+            for (int i = 1;; i++) {
                 Set<Integer> killIds = new HashSet<>();
                 System.out.println("==================== 第" + i + "天 ====================");
 
